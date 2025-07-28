@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/fernandomalo/node-first-app/issues"
   },
-  "homepage": "https://github.com/fernandomalo/node-first-app#readme"
+  "homepage": "https://github.com/fernandomalo/node-first-app#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
