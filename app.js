@@ -6,6 +6,8 @@ const path = require('path');
 
 const adminRoutes = require('./routes/admin');
 const shopRouter = require('./routes/shop');
+const Product = require('./models/product');
+const User = require('./models/user');
 
 const notFoundController = require('./controllers/notFound');
 
@@ -23,7 +25,10 @@ app.use(shopRouter);
 
 app.use(notFoundController.get404Error);
 
-sequelize.sync()
+Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
+User.hasMany(Product);
+
+sequelize.sync({ force: true })
     .then(result => {
         app.listen(3000);
     })
