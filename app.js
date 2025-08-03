@@ -28,8 +28,18 @@ app.use(notFoundController.get404Error);
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 
-sequelize.sync({ force: true })
+sequelize.sync()
     .then(result => {
+        return User.findByPk(1);
+    })
+    .then(user => {
+        if (!user) {
+            return User.create({ name: 'Fernando', email: 'fernando@test.com'})
+        }
+        return user;
+    })
+    .then(user => {
+        console.log(user);
         app.listen(3000);
     })
     .catch(err => {
