@@ -5,12 +5,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const adminRoutes = require('./routes/admin');
-const shopRouter = require('./routes/shop');
+// const shopRouter = require('./routes/shop');
 
 const notFoundController = require('./controllers/notFound');
 
-const sequelize = require('./util/database');
-const mongoConnect = require('./util/database');
+// const sequelize = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 // app.engine('hbs', expressHbs({layoutsDir: 'views/layouts/', defaultLayout: 'main-layout'}));
 app.set('view engine', 'ejs');
@@ -26,14 +26,14 @@ app.use((req, res, next) => {
     //         next();
     //     })
     //     .catch(err => console.log(err));
+    next();
 });
 
 app.use('/admin', adminRoutes);
-app.use(shopRouter);
+// app.use(shopRouter);
 
 app.use(notFoundController.get404Error);
 
-mongoConnect(client => {
-    console.log(client);
+mongoConnect(() => {
     app.listen(3000);
 })
