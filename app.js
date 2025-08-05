@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const adminRoutes = require('./routes/admin');
-// const shopRouter = require('./routes/shop');
+const shopRouter = require('./routes/shop');
 
 const notFoundController = require('./controllers/notFound');
 
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/admin', adminRoutes);
-// app.use(shopRouter);
+app.use(shopRouter);
 
 app.use(notFoundController.get404Error);
 
