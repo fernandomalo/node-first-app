@@ -7,7 +7,7 @@ class Product {
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
-        this._id = _id;
+        this._id = _id ? new ObjectId(_id) : null;
     }
 
     save() {
@@ -47,6 +47,17 @@ class Product {
             .then(product => {
                 console.log(product);
                 return product;
+            })
+            .catch(err => console.log(err))
+    }
+
+    static deleteById(prodId) {
+        const db = getDb();
+        const stringId = String(prodId);
+        return db.collection('products')
+            .deleteOne({_id: new ObjectId(stringId)})
+            .then(result => {
+                console.log('deleted');
             })
             .catch(err => console.log(err))
     }
