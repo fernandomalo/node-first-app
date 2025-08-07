@@ -11,7 +11,8 @@ const User = require('./models/user');
 const notFoundController = require('./controllers/notFound');
 
 // const sequelize = require('./util/database');
-const mongoConnect = require('./util/database').mongoConnect;
+// const mongoConnect = require('./util/database').mongoConnect;
+const mongoose = require('mongoose');
 
 // app.engine('hbs', expressHbs({layoutsDir: 'views/layouts/', defaultLayout: 'main-layout'}));
 app.set('view engine', 'ejs');
@@ -34,6 +35,8 @@ app.use(shopRouter);
 
 app.use(notFoundController.get404Error);
 
-mongoConnect(() => {
-    app.listen(3000);
-})
+mongoose.connect('mongodb+srv://fernando:fernando.29@sandbox.sjuqetg.mongodb.net/shop?retryWrites=true&w=majority&appName=Sandbox')
+    .then(result => {
+        app.listen(3000);
+    })
+    .catch(err => console.log(err));
