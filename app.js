@@ -6,6 +6,7 @@ const path = require('path');
 
 const adminRoutes = require('./routes/admin');
 const shopRouter = require('./routes/shop');
+const User = require('./models/user');
 
 const notFoundController = require('./controllers/notFound');
 
@@ -20,13 +21,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    // User.findByPk(1)
-    //     .then(user => {
-    //         req.user = user;
-    //         next();
-    //     })
-    //     .catch(err => console.log(err));
-    next();
+    User.findByPk('68932f15d4ca73d7b862de6c')
+        .then(user => {
+            req.user = new User(user.name, user.email, user.cart, user._id);
+            next();
+        })
+        .catch(err => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
