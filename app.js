@@ -6,6 +6,8 @@ const path = require('path');
 
 const adminRoutes = require('./routes/admin');
 const shopRouter = require('./routes/shop');
+const authRouter = require('./routes/auth');
+
 const User = require('./models/user');
 
 const notFoundController = require('./controllers/notFound');
@@ -32,6 +34,7 @@ app.use((req, res, next) => {
 
 app.use('/admin', adminRoutes);
 app.use(shopRouter);
+app.use(authRouter);
 
 app.use(notFoundController.get404Error);
 
