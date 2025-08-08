@@ -1,9 +1,11 @@
 const express = require('express');
 
 const app = express();
+
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
+const MongoDBSession = require('connect-mongodb-session')(session);
 
 const adminRoutes = require('./routes/admin');
 const shopRouter = require('./routes/shop');
@@ -21,9 +23,16 @@ const mongoose = require('mongoose');
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const MONGODB_URI = 'mongodb+srv://fernando:fernando.29@sandbox.sjuqetg.mongodb.net/shop?retryWrites=true&w=majority&appName=Sandbox'
+
+const store = new MongoDBSession({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false }));
+app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
 
 app.use((req, res, next) => {
     User.findById('6894c22047b7b3e1d6526aa2')
@@ -40,7 +49,7 @@ app.use(authRouter);
 
 app.use(notFoundController.get404Error);
 
-mongoose.connect('mongodb+srv://fernando:fernando.29@sandbox.sjuqetg.mongodb.net/shop?retryWrites=true&w=majority&appName=Sandbox')
+mongoose.connect(MONGODB_URI)
     .then(result => {
         User.findOne()
             .then(user => {
